@@ -26,4 +26,10 @@ def upload_file_api():
     if request.method == 'POST':
         f = request.files['file']
         f.save(os.path.join(UPLOAD_FOLDER,secure_filename(f.filename)))
-        return 'file uploaded successfully'
+        return render_template('uploadSuccessfull.html')
+
+
+@route_api.route('/process', methods=['GET', 'POST'])
+def process_file_api():
+    if request.method == 'POST':
+        return 'process File'
