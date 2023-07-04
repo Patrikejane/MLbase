@@ -12,7 +12,7 @@ function Home() {
     const formData = new FormData();
     formData.append("file", data.file[0]);
 
-    const res = await fetch("http://localhost:5050/uploader", {
+    const res = await fetch("http://localhost:5000/uploader", {
         method: "POST",
         body: formData,
     }).then((res) => res.json());
@@ -27,7 +27,7 @@ const onFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
 const processFile = async (e: React.MouseEvent<HTMLButtonElement>) => {
 
-  const res = await fetch("http://localhost:5050/process", {
+  const res = await fetch("http://localhost:5000/process", {
     method: "POST",
     body: file,
     }).then((res) => res.json());
