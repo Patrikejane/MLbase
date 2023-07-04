@@ -1,8 +1,9 @@
 import os
 
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, jsonify, abort
 from werkzeug.utils import secure_filename
 from from_root import from_root
+from flask_cors import cross_origin
 
 route_api = Blueprint('router', __name__)
 
@@ -21,15 +22,35 @@ def upload_file():
     return render_template('upload.html')
 
 
-@route_api.route('/uploader', methods=['GET', 'POST'])
+@route_api.route('/uploader', methods=[ 'POST'])
+@cross_origin()
 def upload_file_api():
-    if request.method == 'POST':
-        f = request.files['file']
-        f.save(os.path.join(UPLOAD_FOLDER,secure_filename(f.filename)))
-        return render_template('uploadSuccessfull.html')
+    try:
+        if request.method == 'POST':
+            f = request.files['file']
+            f.save(os.path.join(UPLOAD_FOLDER,secure_filename(f.filename)))
+
+            return jsonify({
+                'status' : 200,
+                'success': True,
+                'filename': f.filename
+            })
+    except:
+        abort(404)
 
 
-@route_api.route('/process', methods=['GET', 'POST'])
+@route_api.route('/process', methods=['POST'])
 def process_file_api():
-    if request.method == 'POST':
-        return 'process File'
+
+    try:
+        if request.method == 'POST':
+            ##TODO do the processing here get the result and set the outCom
+
+            return jsonify({
+                'status': 200,
+                'success': True,
+                'message': "Process Sucess",
+                'outcome' : "Vehicle Sound"
+            })
+    except:
+        abort(404)
