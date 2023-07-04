@@ -36,7 +36,11 @@ def upload_file_api():
                 'filename': f.filename
             })
     except:
-        abort(404)
+        return jsonify({
+            'status': 404,
+            'success': False,
+            'filename': "No file Saved"
+        })
 
 
 @route_api.route('/process', methods=['POST'])
@@ -53,4 +57,16 @@ def process_file_api():
                 'outcome' : "Vehicle Sound"
             })
     except:
-        abort(404)
+        return jsonify({
+            'status': 404,
+            'success': False,
+            'filename': "No file Saved"
+        })
+
+@route_api.errorhandler(400)
+@route_api.errorhandler(404)
+def error_handler(error):
+    return jsonify({'error': {
+        'code': error.description['code'],
+        'message': error.description['message']
+    }}), error.code
